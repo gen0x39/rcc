@@ -1,14 +1,15 @@
 #!/bin/bash
+
+rcc="../target/debug/rcc"
+
 try() {
   expected="$1"
   input="$2"
 
-  cargo run "$input" >> tmp.s
-
-  gcc -o tmp tmp.s
+  ${rcc} "$input" > tmp.s
+  gcc -static -o tmp tmp.s
   ./tmp
   actual="$?"
-  rm -f tmp*
 
   if [ "$actual" = "$expected" ]; then
     echo "$input => $actual"
@@ -18,8 +19,11 @@ try() {
   fi
 }
 
+cargo build
+
 try 0 0
 try 42 42
+try 1 "2+6-7"
 try 41 " 12 + 34 - 5 "
 
 echo OK

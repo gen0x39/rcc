@@ -1,3 +1,8 @@
 /sample_code
 /target
 /settings
+.DS_Store
+src/.DS_Store
+*~
+*.o
+tmp*

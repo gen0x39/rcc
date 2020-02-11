@@ -1,7 +1,7 @@
 use std::env;
 
 // トークンの種類
-#[derive(Debug)]
+//#[derive(Debug)]
 enum TokenKind {
     TkReserve(char),  // 記号
     TkNum(u32),       // 整数トークン
@@ -9,8 +9,10 @@ enum TokenKind {
 }
 
 /*
-// エラーを報告するための関数
-fn error() {
+// エラーを報告するためのマクロ
+// Rustでは可変長ひきすがないのでマクロを使う
+fn error(fmt: &str) {
+    eprint(fmt);
     .....
 }
 */
@@ -50,7 +52,9 @@ fn tokenize(formula: &str) -> Vec<TokenKind> {
                 else { break; }
             }
             token.push(TokenKind::TkNum(n));
+            continue;
         }
+        // errorマクロ
     }
     token.push(TokenKind::TkEof('e'));
     token
