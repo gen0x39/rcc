@@ -8,14 +8,19 @@ enum TokenKind {
     TkEof(char),      // 入力の終わりを表すトークン
 }
 
-/*
 // エラーを報告するためのマクロ
 // Rustでは可変長ひきすがないのでマクロを使う
-fn error(fmt: &str) {
-    eprint(fmt);
-    .....
+macro_rules! error {
+    () => (eprint!("\n"));
+    ($fmt:expr) => {
+        (eprint!(concat!($fmt, "\n")));
+        std::process::exit(1);
+    };
+    ($fmt:expr, $($arg:tt)*) => {
+        (eprint!(concat!($fmt, "\n"), $($arg)*));
+        std::process::exit(1);
+    };
 }
-*/
 
 // 入力文字列をトークナイズしてそれを返す
 fn tokenize(formula: &str) -> Vec<TokenKind> {
@@ -54,7 +59,9 @@ fn tokenize(formula: &str) -> Vec<TokenKind> {
             token.push(TokenKind::TkNum(n));
             continue;
         }
-        // errorマクロ
+        
+        error!("トークナイズできません");
+
     }
     token.push(TokenKind::TkEof('e'));
     token
