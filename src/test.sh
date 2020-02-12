@@ -26,4 +26,6 @@ try 42 42
 try 1 "2+6-7"
 try 41 " 12 + 34 - 5 "
 
+rm tmp*
+
 echo OK

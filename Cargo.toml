@@ -2,5 +2,6 @@
 name = "rcc"
 version = "0.1.0"
 authors = ["gen0x39 <mg@gen0x39.jp>"]
+edition = "2018"
 
 [dependencies]

@@ -6,3 +6,4 @@ src/.DS_Store
 *~
 *.o
 tmp*
+login.sh
