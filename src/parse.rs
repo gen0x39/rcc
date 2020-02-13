@@ -1,41 +1,29 @@
-use crate::TokenKind;
+use crate::TokenType;
 
-pub fn parse(token_vec: &Vec<TokenKind>) {
+pub fn parse(token_vec: &Vec<TokenType>) {
     // アセンブリの前半部分の出力
     println!(".intel_syntax noprefix");
     println!(".global main");
     println!("main:");
 
-    let mut result = 0;
-
     // アセンブリを出力
     for i in 0..token_vec.len() {
-        // result : 0 -> eof, 1 ~ 2 : 演算子, 100 : 数
-        let tmp_result = match &token_vec[i]{
-            TokenKind::TkReserve(op) => {
-                if *op == '+' { 1 }
-                else if *op == '-' { 2 }
-                else { -1 }
-            },
-            TokenKind::TkNum(n) => {
+        match &token_vec[i]{
+            TokenType::Num(n) => {
                 // 式の最初は数でなければならないので、それをチェックして最初のmov命令を出力
-                if i == 0 {
-                    println!("  mov rax, {}", n);
-                }
-                else {
-                    if result == 1 {
-                        println!("  add rax, {}", n);
-                    }
-                    else if result == 2 {
-                        println!("  sub rax, {}", n);
-                    }
-                }
-                100
+                if i == 0 { println!("  mov rax, {}", n); }
+                else { println!("{}",n); }
             },
-            TokenKind::TkEof(_c) => 0,
-            //_ => -1,  // エラーハンドリング(あとで)
-        };
-        result = tmp_result;
+            TokenType::Plus => {
+                print!("  add rax, ");
+            },
+            TokenType::Minus => {
+                print!("  sub rax, ");
+            },
+            TokenType::Eof =>  {
+                println!("  ret");
+            },
+            _ => (),  // エラーハンドリング(あとで)
+        }
     }
-    println!("  ret");
 }

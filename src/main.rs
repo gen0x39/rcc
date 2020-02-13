@@ -21,10 +21,14 @@ macro_rules! error {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+    if args.len() != 2 {
+        error!("引数の数を確認してください");
+    }
+
     let formula = &args[1];
     let mut token_vec = Vec::new();
 
-    // トークナイズする
+    // tokenize -> Vec<TokenType>
     token_vec = tokenize(formula);
 
     parse(&token_vec);    

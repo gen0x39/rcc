@@ -1,6 +1,6 @@
-use crate::TokenKind;
+use crate::TokenType;
 
-pub fn tokenize(formula: &str) -> Vec<TokenKind> {
+pub fn tokenize(formula: &str) -> Vec<TokenType> {
     let mut token = Vec::new();
     let mut i = 0;
 
@@ -15,7 +15,11 @@ pub fn tokenize(formula: &str) -> Vec<TokenKind> {
         
         // 加減算
         if c == '+' || c == '-' {
-            token.push(TokenKind::TkReserve(c));
+            match Some(c) {
+                Some('+') => token.push(TokenType::Plus),
+                Some('-') => token.push(TokenType::Minus),
+                _ => ()
+            }
             i += 1;
             continue;
         }
@@ -33,13 +37,11 @@ pub fn tokenize(formula: &str) -> Vec<TokenKind> {
                 }
                 else { break; }
             }
-            token.push(TokenKind::TkNum(n));
+            token.push(TokenType::Num(n));
             continue;
         }
-        
         //error!("トークナイズできません");
-
     }
-    token.push(TokenKind::TkEof('e'));
+    token.push(TokenType::Eof);
     token
 }
